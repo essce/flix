@@ -23,7 +23,7 @@ def query_console(showname=None, name=None, season=None, episode=None):
 	season = ep.seasonNum
 	episode = ep.episodenum
 
-	return render_template('query.html', showname=showname, name=name, season=season, episode=episode)
+	return render_template('result.html', showname=showname, name=name, season=season, episode=episode)
 
 def getURL(title):
 	title = addSpace(title)
