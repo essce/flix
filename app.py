@@ -7,12 +7,20 @@ app = Flask(__name__)
 
 @app.route('/')
 def main():
-	print('yoooo')
 	return render_template('query.html')
 
 @app.route('/', methods=['POST'])
 def query_console(showname=None, name=None, season=None, episode=None):
 	_title = request.form['title']
+
+	if not _title:
+		try: 
+			raise ValueError("Search is empty.")
+		except ValueError as err:
+			print(err.args)
+		finally:
+			return render_template('query.html')
+
 	_url = getURL(_title)
 
 	r = requests.get(_url)
