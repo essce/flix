@@ -1,0 +1,20 @@
+{% extends "layout.html" %}
+{% block body %}
+
+	<div class="container">
+	    <form action="{{ url_for('query_console') }}" method="post" class="text-center">
+	    	<div class="form-group">
+		    	<div class="row">
+		    		<div class="row-xs-2"></div>
+		    		<div class="row-xs-8">
+				    	<h2>SEARCH FOR YOUR FLICK</h2>
+				    	<input class="form-control" type="text" name="title" autofocus="autofocus"></input>
+				    	<br/>
+						<button type="submit" class="btn btn-info btn-block">Find an episode</button>
+					</div>
+				</div>
+			</div>
+    	</form>
+	</div>
+	{% block div %}{% endblock %}
+{% endblock %}
