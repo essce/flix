@@ -1,3 +1,4 @@
+import os
 import requests, json
 from random import randint
 from flask import Flask, render_template, request
@@ -68,7 +69,7 @@ def addSpace(title):
 	return newTitle
 
 
+port = os.getenv('PORT', '5000')
 if __name__ == "__main__":
-    app.run(debug=True)
-
+    app.run(host='0.0.0.0', port=int(port))
 
