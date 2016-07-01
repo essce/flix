@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 This README.md file is displayed on your project page. You should edit this 
 file to describe your project, including instructions for building and 
 running the project, pointers to the license under which you are making the 
@@ -15,3 +16,10 @@ eye-catching graphic.
 
 Finally, consider defining some sprints and work items in Track & Plan to give 
 interested developers a sense of your cadence and upcoming enhancements.
+=======
+# FLIX
+
+## Description
+
+Flix is a very simple episode generator. For the folks that love to rewatch their favourite TV series, just enter your show and a random episode will be generated. 
+>>>>>>> b61a0bd8120862aab558fdd3f49a4105e055808e

@@ -38,6 +38,24 @@ def query_console(placeholder=None, showname=None, name=None, season=None, episo
 
 	return render_template('result.html', showname=showname, name=name, season=season, episode=episode)
 
+def query_console(showname=None, name=None, season=None, episode=None):
+	_title = request.form['title']
+
+	if not _title:
+		try: 
+			raise ValueError("Search is empty.")
+		except ValueError as err:
+			print(err.args)
+		finally:
+			return render_template('query.html')
+
+	_url = getURL(_title)
+
+	r = requests.get(_url)
+	ep = getData(r)
+	return render_template('result.html', showname=showname, name=name, season=season, episode=episode)
+
+
 @app.route('/reroll', methods=['GET'])
 def reroll(showname=None, name=None, season=None, episode=None):
 	
@@ -48,12 +66,15 @@ def reroll(showname=None, name=None, season=None, episode=None):
 	episode = ep.episodenum
 	return render_template('result.html', showname=showname, name=name, season=season, episode=episode)
 
-
 def getURL(title):
 	title = addSpace(title)
 	__url = "http://api.tvmaze.com/singlesearch/shows?q="
 	__url += title
 	__url += "&embed=episodes"
+	return __url
+
+def getData(response):
+	result = response.json()
 	return __url
 
 def getData(response):
@@ -70,7 +91,6 @@ def getData(response):
 
 			episode = Episode(epName, seasonNum, epNum, result["name"]) 	#make an Episode obj
 			episodes.append(episode)
-
 
 		# Episodes list generated 
 		global allEpisodes
@@ -95,7 +115,6 @@ def addSpace(title):
 			newTitle += letter	
 
 	return newTitle
-
 
 port = os.getenv('PORT', '5000')
 if __name__ == "__main__":
