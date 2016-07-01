@@ -5,7 +5,6 @@ from flask import Flask, render_template, request
 from Show import Episode
 
 app = Flask(__name__)
-app.config['DEBUG'] = True
 
 #global variables#######
 allEpisodes = []
