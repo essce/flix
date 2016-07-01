@@ -8,7 +8,6 @@ app = Flask(__name__)
 
 @app.route('/')
 def main():
-	print('yoooo')
 	return render_template('query.html')
 
 @app.route('/', methods=['POST'])
@@ -31,13 +30,10 @@ def getURL(title):
 	__url = "http://api.tvmaze.com/singlesearch/shows?q="
 	__url += title
 	__url += "&embed=episodes"
-	print("url: ", __url)
 	return __url
 
 def getData(response):
-	print("Response code: ", response.status_code)
 	result = response.json()
-	print(type(result))
 
 	try:
 		alleps = result["_embedded"]["episodes"]
