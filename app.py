@@ -21,7 +21,7 @@ def query_console(placeholder=None, message=None, showname=None, name=None, seas
 		_title = request.form['title']
 		if not _title:
 			msg = "Input cannot be empty"
-			return render_template('bad_query.html', placeholder=msg, message=msg)
+			return render_template('query.html', placeholder=msg, message=msg)
 			
 		_url = getURL(_title)
 
@@ -36,7 +36,7 @@ def query_console(placeholder=None, message=None, showname=None, name=None, seas
 	except ValueError as e:
 		print(e)
 		msg = "Please enter a proper TV show name"
-		return render_template('bad_query.html', placeholder=msg, message=msg)
+		return render_template('query.html', placeholder=msg, message=msg)
 
 	return render_template('result.html', showname=showname, name=name, season=season, episode=episode)
 
@@ -77,31 +77,27 @@ def getURL(title):
 
 def getData(response):
 	result = response.json()
-	return __url
+	
+	alleps = result["_embedded"]["episodes"]
 
-def getData(response):
-	result = response.json()
+	if not alleps:
+		raise ValueError("Search is invalid.") 
 
-	try:
-		alleps = result["_embedded"]["episodes"]
-		episodes = []
+	episodes = []
 
-		for a in alleps: 				#for each episode
-			epName = a["name"] 			#get name
-			seasonNum = a["season"] 	#get season
-			epNum = a["number"]			#get episode number
+	for a in alleps: 				#for each episode
+		epName = a["name"] 			#get name
+		seasonNum = a["season"] 	#get season
+		epNum = a["number"]			#get episode number
 
-			episode = Episode(epName, seasonNum, epNum, result["name"]) 	#make an Episode obj
-			episodes.append(episode)
+		episode = Episode(epName, seasonNum, epNum, result["name"]) 	#make an Episode obj
+		episodes.append(episode)
 
-		# Episodes list generated 
-		global allEpisodes
-		allEpisodes = episodes 
+	# Episodes list generated 
+	global allEpisodes
+	allEpisodes = episodes 
 
-		return randomize()
-
-	except ValueError as e:
-		print(e)
+	return randomize()
 
 def randomize():
 	randomEp = randint(0, len(allEpisodes)-1)
