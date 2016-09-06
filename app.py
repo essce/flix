@@ -15,12 +15,13 @@ def main():
 	return render_template('query.html')
 
 @app.route('/', methods=['POST'])
-def query_console(placeholder=None, showname=None, name=None, season=None, episode=None):
+def query_console(placeholder=None, message=None, showname=None, name=None, season=None, episode=None):
 
 	try: 
 		_title = request.form['title']
 		if not _title:
-			return render_template('query.html', placeholder="Input cannot be empty")
+			msg = "Input cannot be empty"
+			return render_template('bad_query.html', placeholder=msg, message=msg)
 			
 		_url = getURL(_title)
 
@@ -34,7 +35,8 @@ def query_console(placeholder=None, showname=None, name=None, season=None, episo
 
 	except ValueError as e:
 		print(e)
-		return render_template('query.html', placeholder="Please enter a proper TV show name")
+		msg = "Please enter a proper TV show name"
+		return render_template('bad_query.html', placeholder=msg, message=msg)
 
 	return render_template('result.html', showname=showname, name=name, season=season, episode=episode)
 
