@@ -4,13 +4,8 @@ import (
 	"encoding/json"
 	"log"
 	"net/http"
-	"net/url"
 
 	"github.com/essce/flix/pkg/flix"
-)
-
-const (
-	showURL = "http://api.tvmaze.com/singlesearch/shows?"
 )
 
 func (h *Handler) Query(w http.ResponseWriter, r *http.Request) {
@@ -37,29 +32,15 @@ func (h *Handler) Query(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	p := url.Values{}
-	p.Set("q", term)
-	p.Set("embed", "episodes")
-
-	req, err := http.NewRequest("GET", showURL+p.Encode(), nil)
+	res, err := h.API.Get(ctx, term)
 	if err != nil {
-		h.writeJSONError(w, "failed to create request", 500)
+		h.writeJSONError(w, "failed make api call", 500)
 		log.Printf("error: %s", err.Error())
 		return
 	}
 
-	resp, err := h.Client.Do(req)
-	if err != nil || resp.StatusCode != 200 {
-		h.writeJSONError(w, "failed to send request", resp.StatusCode)
-		log.Printf("error: %s", err.Error())
-		return
-	}
-
-	var res flix.Show
-	err = json.NewDecoder(resp.Body).Decode(&res)
-	if err != nil {
-		h.writeJSONError(w, "failed to decode response", 500)
-		log.Printf("error: %s", err.Error())
+	if res == nil {
+		h.writeJSONError(w, "show not found", 400)
 		return
 	}
 

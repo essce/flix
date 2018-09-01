@@ -10,16 +10,10 @@ import (
 
 	"github.com/essce/flix/pkg/handler"
 	"github.com/essce/flix/pkg/redis"
+	"github.com/essce/flix/pkg/tvmaze"
 )
 
 func main() {
-	client := http.Client{
-		Timeout: 10 * time.Second,
-		Transport: &http.Transport{
-			IdleConnTimeout: 10 * time.Second,
-		},
-	}
-
 	fmt.Println("hello")
 
 	r, err := redis.New("")
@@ -28,9 +22,11 @@ func main() {
 	}
 	defer r.Close()
 
+	a := tvmaze.New()
+
 	h := handler.Handler{
-		Cache:  r,
-		Client: &client,
+		API:   a,
+		Cache: r,
 	}
 
 	s := http.Server{

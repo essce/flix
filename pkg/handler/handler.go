@@ -5,17 +5,22 @@ import (
 	"encoding/json"
 	"net/http"
 
+	"github.com/essce/flix/pkg/flix"
 	"github.com/gorilla/mux"
 )
 
 type Handler struct {
-	Cache  Cache
-	Client *http.Client
+	API   API
+	Cache Cache
 }
 
 type Cache interface {
 	Get(context.Context, string) ([]byte, error)
 	Set(context.Context, string, []byte) error
+}
+
+type API interface {
+	Get(context.Context, string) (*flix.Show, error)
 }
 
 func (h *Handler) HTTPHandler() http.Handler {
